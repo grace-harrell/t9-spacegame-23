@@ -2,6 +2,8 @@ import pygame
 from random import randrange
 import os
 import button
+import time
+import sys
 pygame.init()
 
 FPS = 100
@@ -52,7 +54,7 @@ pygame.display.set_caption("Space Game")
 
 def draw_window(player, space_trash1, space_trash2, space_trash3, hp):
     WIN.blit(BACKGROUND,(0,0))
-    WIN.blit(exit_Button,(1100,675))
+    # WIN.blit(exit_Button,(1100,675))
     WIN.blit(SPACE_STATION, (player.x, player.y))
     WIN.blit(ASTROID, (space_trash1.x, space_trash1.y))
     WIN.blit(ASTROID2, (space_trash2.x, space_trash2.y))
@@ -89,7 +91,7 @@ def hit_space_trash(hp):
     hp -= 1
     return hp
 
-def game_over(player):
+def game_over():
     #player.kill()
     game_over_text = FONT.render("Game Over", True, (200, 200, 200))
     WIN.blit(game_over_text,((WIDTH/2 - (game_over_text.get_width()/2)), (HEIGHT/2 + (game_over_text.get_height()/2)))) 
@@ -115,8 +117,8 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-        if width/2 <= mouse[0] <= width/2+140 and height/2 <= mouse[1] <= height/2+40:
-            pygame.quit()
+        #if width/2 <= mouse[0] <= width/2+140 and height/2 <= mouse[1] <= height/2+40:
+         #   pygame.quit()
         
         space_trash_movement(space_trash1)
         space_trash_movement(space_trash2)
@@ -130,7 +132,7 @@ def main():
 
         draw_window(player, space_trash1, space_trash2, space_trash3, hp)
         if hp == 0:
-            game_over(player)
+            game_over()
     pygame.quit()
 
 if __name__ == "__main__":
