@@ -2,6 +2,36 @@ import pygame
 from random import randrange
 import os
 import button
+
+# button class
+class Button():
+	def __init__(self, x, y, image, scale):
+		width = image.get_width()
+		height = image.get_height()
+		self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+		self.rect = self.image.get_rect()
+		self.rect.topleft = (x, y)
+		self.clicked = False
+
+	def draw(self, surface):
+		action = False
+		#get mouse position
+		pos = pygame.mouse.get_pos()
+
+		#check mouseover and clicked conditions
+		if self.rect.collidepoint(pos):
+			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+				self.clicked = True
+				action = True
+
+		if pygame.mouse.get_pressed()[0] == 0:
+			self.clicked = False
+
+		#draw button on screen
+		surface.blit(self.image, (self.rect.x, self.rect.y))
+
+		return action
+
 pygame.init()
 
 FPS = 100
@@ -18,6 +48,10 @@ ASTROID_WIDTH, ASTROID_HEIGHT = 200, 200
 
 
 FONT = pygame.font.Font('freesansbold.ttf', 32)
+
+exit_Button_img= pygame.image.load(os.path.join('Assets', 'quit_button.png'))
+exit_Button = button.Button(450, 200, exit_Button_img, 0.8)
+# exit_Button = pygame.transform.scale(exit_Button_img, (100, 100))
 
 BACKGROUND_IMG = pygame.image.load(os.path.join('Assets', 'spacegame_background.png'))
 BACKGROUND = pygame.transform.scale(BACKGROUND_IMG, (WIDTH, HEIGHT))
@@ -48,6 +82,7 @@ pygame.display.set_caption("Space Game")
 
 def draw_window(player, space_trash1, space_trash2, space_trash3, hp):
     WIN.blit(BACKGROUND,(0,0))
+    WIN.blit(exit_Button,(1100,675))
     WIN.blit(SPACE_STATION, (player.x, player.y))
     WIN.blit(ASTROID, (space_trash1.x, space_trash1.y))
     WIN.blit(ASTROID2, (space_trash2.x, space_trash2.y))
@@ -101,7 +136,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-    
+
+        if width/2 <= mouse[0] <= width/2+140 and height/2 <= mouse[1] <= height/2+40:
+            pygame.quit()
+        
         space_trash_movement(space_trash1)
         space_trash_movement(space_trash2)
         space_trash_movement(space_trash3)
