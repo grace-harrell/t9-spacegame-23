@@ -1,10 +1,16 @@
 import pygame
 from random import randrange
+from pygame import mixer
 import os
 import button
 import time
 import sys
 pygame.init()
+mixer.init()
+
+mixer.music.load(os.path.join('Assets','space_tunes.mp3'))
+mixer.music.set_volume(0.5)
+mixer.music.play()
 
 FPS = 100
 VEL = 5
@@ -126,6 +132,8 @@ def main():
         if mins == 60:
             mins = 0
             hour += 1
+
+        
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
