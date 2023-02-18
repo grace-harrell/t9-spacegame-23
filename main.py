@@ -1,9 +1,11 @@
 import pygame
+from random import randrange
 import os
 pygame.init()
 
 FPS = 60
 VEL = 5
+SPACE_TRASH_VEL = 7
 
 WIDTH, HEIGHT = 1200, 800
 SPACE_STATION_WIDTH, SPACE_STATION_HEIGHT = 300, 300
@@ -28,8 +30,11 @@ def draw_window(player, space_trash):
 
     pygame.display.update()
 
+trash_x = 1300
+trash_y = randrange(HEIGHT)
+    
 def main():
-    space_trash = pygame.Rect(1300, 150, ASTROID_WIDTH, ASTROID_HEIGHT)
+    space_trash = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH, ASTROID_HEIGHT)
     player = pygame.Rect(150,300, SPACE_STATION_WIDTH, SPACE_STATION_HEIGHT)
 
     clock = pygame.time.Clock()
@@ -40,7 +45,11 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-        space_trash.x -= 1
+
+        space_trash.x -= SPACE_TRASH_VEL
+        if space_trash.x <= 0:
+            space_trash.x = trash_x
+            space_trash.y = randrange(HEIGHT)
 
         keys_pressed = pygame.key.get_pressed()
 
