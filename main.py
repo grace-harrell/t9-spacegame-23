@@ -49,19 +49,17 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Game")
 
 
-#def make_text(hp):
-#    text = FONT.render('HP: '+ str(hp), True, GREEN)
-#    text_rect = text.get_rect()
-#    text_rect.center = (60, 750)
-
-
-def draw_window(player, space_trash1, space_trash2, space_trash3, hp):
+def draw_window(player, space_trash1, space_trash2, space_trash3, hp, hour, mins, sec):
     WIN.blit(BACKGROUND,(0,0))
     # WIN.blit(exit_Button,(1100,675))
     WIN.blit(SPACE_STATION, (player.x, player.y))
     WIN.blit(ASTROID, (space_trash1.x, space_trash1.y))
     WIN.blit(ASTROID2, (space_trash2.x, space_trash2.y))
     WIN.blit(ASTROID3, (space_trash3.x, space_trash3.y))
+    time_text = FONT.render("{}:{}:{}".format(sec, mins, hour), True, GREEN)
+    time_text_rect = time_text.get_rect()
+    time_text_rect.center = (60, 720)
+    WIN.blit(time_text, time_text_rect)
     text = FONT.render('HP: '+ str(hp), True, GREEN)
     text_rect = text.get_rect()
     text_rect.center = (60, 750)
@@ -107,6 +105,9 @@ def game_over():
 
 
 def main():
+    sec = 0
+    mins = 0
+    hour = 0
     hp = 100
     space_trash1 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH - 100, ASTROID_HEIGHT - 100)
     space_trash2 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH - 100, ASTROID_HEIGHT - 100)
@@ -118,6 +119,14 @@ def main():
     run = True
     while run :
         clock.tick(FPS)
+        sec+=1
+        if sec == 60:
+            sec = 0
+            mins += 1
+        if mins == 60:
+            mins = 0
+            hour += 1
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -138,7 +147,7 @@ def main():
         if player.colliderect(space_trash1) or player.colliderect(space_trash2) or player.colliderect(space_trash3):
             hp = hit_space_trash(hp)
 
-        draw_window(player, space_trash1, space_trash2, space_trash3, hp)
+        draw_window(player, space_trash1, space_trash2, space_trash3, hp, sec, mins, hour)
         if hp == 0:
             game_over()
     pygame.quit()
