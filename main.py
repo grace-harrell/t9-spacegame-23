@@ -7,12 +7,17 @@ pygame.init()
 FPS = 100
 VEL = 5
 SPACE_TRASH_VEL = 7
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 128)
 
 WIDTH, HEIGHT = 1200, 800
 
 
 SPACE_STATION_WIDTH, SPACE_STATION_HEIGHT = 300, 300
 ASTROID_WIDTH, ASTROID_HEIGHT = 200, 200
+
+
+FONT = pygame.font.Font('freesansbold.ttf', 32)
 
 BACKGROUND_IMG = pygame.image.load(os.path.join('Assets', 'spacegame_background.png'))
 BACKGROUND = pygame.transform.scale(BACKGROUND_IMG, (WIDTH, HEIGHT))
@@ -30,8 +35,16 @@ ASTROID_IMG3 = pygame.image.load(os.path.join('Assets', 'astroid_sprite3.png'))
 ASTROID3 = pygame.transform.scale(ASTROID_IMG3, (ASTROID_WIDTH, ASTROID_HEIGHT))
 
 
+
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Space Game")
+
+
+#def make_text(hp):
+#    text = FONT.render('HP: '+ str(hp), True, GREEN)
+#    text_rect = text.get_rect()
+#    text_rect.center = (60, 750)
+
 
 def draw_window(player, space_trash1, space_trash2, space_trash3):
     WIN.blit(BACKGROUND,(0,0))
@@ -39,9 +52,7 @@ def draw_window(player, space_trash1, space_trash2, space_trash3):
     WIN.blit(ASTROID, (space_trash1.x, space_trash1.y))
     WIN.blit(ASTROID2, (space_trash2.x, space_trash2.y))
     WIN.blit(ASTROID3, (space_trash3.x, space_trash3.y))
-
-
-
+   # WIN.blit(text, text_rect)
     pygame.display.update()
 
 trash_x = 1300
@@ -66,9 +77,14 @@ def player_movement(keypressed, player):
         if keypressed[pygame.K_s] and player.y < (HEIGHT - 70): # MOVE DOWN
             player.y += VEL
 
+def hit_space_trash(hp):
+    hp -= 1
+    return hp
 
 
 def main():
+    hp = 100
+    #make_text(hp)
     space_trash1 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH, ASTROID_HEIGHT)
     space_trash2 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH, ASTROID_HEIGHT)
     space_trash3 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH, ASTROID_HEIGHT)
@@ -89,6 +105,10 @@ def main():
 
         keys_pressed = pygame.key.get_pressed()
         player_movement(keys_pressed, player)
+
+        if player.colliderect(space_trash1) or player.colliderect(space_trash2) or player.colliderect(space_trash3):
+            hp = hit_space_trash(hp)
+            #make_text(hp)
 
         draw_window(player, space_trash1, space_trash2, space_trash3)
     pygame.quit()
