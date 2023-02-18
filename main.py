@@ -2,6 +2,8 @@ import pygame
 from random import randrange
 import os
 import button
+import time
+import sys
 pygame.init()
 
 FPS = 100
@@ -84,10 +86,18 @@ def hit_space_trash(hp):
     hp -= 1
     return hp
 
+def game_over(player):
+    #player.kill()
+    game_over_text = FONT.render("Game Over", True, (200, 200, 200))
+    WIN.blit(game_over_text,((WIDTH/2 - (game_over_text.get_width()/2)), (HEIGHT/2 + (game_over_text.get_height()/2)))) 
+    pygame.display.update()
+    time.sleep(5)
+    pygame.quit()
+    sys.exit()
+
 
 def main():
     hp = 100
-    #make_text(hp)
     space_trash1 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH - 100, ASTROID_HEIGHT - 100)
     space_trash2 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH - 100, ASTROID_HEIGHT - 100)
     space_trash3 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH - 100, ASTROID_HEIGHT - 100)
@@ -113,6 +123,8 @@ def main():
             hp = hit_space_trash(hp)
 
         draw_window(player, space_trash1, space_trash2, space_trash3, hp)
+        if hp == 0:
+            game_over(player)
     pygame.quit()
 
 if __name__ == "__main__":
