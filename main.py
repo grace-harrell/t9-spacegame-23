@@ -46,13 +46,16 @@ pygame.display.set_caption("Space Game")
 #    text_rect.center = (60, 750)
 
 
-def draw_window(player, space_trash1, space_trash2, space_trash3):
+def draw_window(player, space_trash1, space_trash2, space_trash3, hp):
     WIN.blit(BACKGROUND,(0,0))
     WIN.blit(SPACE_STATION, (player.x, player.y))
     WIN.blit(ASTROID, (space_trash1.x, space_trash1.y))
     WIN.blit(ASTROID2, (space_trash2.x, space_trash2.y))
     WIN.blit(ASTROID3, (space_trash3.x, space_trash3.y))
-   # WIN.blit(text, text_rect)
+    text = FONT.render('HP: '+ str(hp), True, GREEN)
+    text_rect = text.get_rect()
+    text_rect.center = (60, 750)
+    WIN.blit(text, text_rect)
     pygame.display.update()
 
 trash_x = 1300
@@ -85,11 +88,11 @@ def hit_space_trash(hp):
 def main():
     hp = 100
     #make_text(hp)
-    space_trash1 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH, ASTROID_HEIGHT)
-    space_trash2 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH, ASTROID_HEIGHT)
-    space_trash3 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH, ASTROID_HEIGHT)
+    space_trash1 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH - 100, ASTROID_HEIGHT - 100)
+    space_trash2 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH - 100, ASTROID_HEIGHT - 100)
+    space_trash3 = pygame.Rect(trash_x, trash_y, ASTROID_WIDTH - 100, ASTROID_HEIGHT - 100)
 
-    player = pygame.Rect(150,300, SPACE_STATION_WIDTH, SPACE_STATION_HEIGHT)
+    player = pygame.Rect(150,300, SPACE_STATION_WIDTH - 70, SPACE_STATION_HEIGHT - 70)
 
     clock = pygame.time.Clock()
     run = True
@@ -108,9 +111,8 @@ def main():
 
         if player.colliderect(space_trash1) or player.colliderect(space_trash2) or player.colliderect(space_trash3):
             hp = hit_space_trash(hp)
-            #make_text(hp)
 
-        draw_window(player, space_trash1, space_trash2, space_trash3)
+        draw_window(player, space_trash1, space_trash2, space_trash3, hp)
     pygame.quit()
 
 if __name__ == "__main__":
