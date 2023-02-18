@@ -25,6 +25,9 @@ exit_Button_img= pygame.image.load(os.path.join('Assets', 'quit_button.png'))
 exit_Button = button.Button(1050, 680, exit_Button_img, 0.03)
 # exit_Button = pygame.transform.scale(exit_Button_img, (100, 100))
 
+reset_Button_img= pygame.image.load(os.path.join('Assets', 'retry_button.png'))
+reset_Button = button.Button(500, 500, reset_Button_img, 0.03)
+
 BACKGROUND_IMG = pygame.image.load(os.path.join('Assets', 'spacegame_background.png'))
 BACKGROUND = pygame.transform.scale(BACKGROUND_IMG, (WIDTH, HEIGHT))
 
@@ -96,6 +99,8 @@ def game_over():
     game_over_text = FONT.render("Game Over", True, (200, 0, 0))
     WIN.blit(game_over_text,((WIDTH/2 - (game_over_text.get_width()/2)), (HEIGHT/2 + (game_over_text.get_height()/2)))) 
     pygame.display.update()
+    if reset_Button.draw(BACKGROUND):
+        main()
     time.sleep(5)
     pygame.quit()
     sys.exit()
@@ -119,6 +124,9 @@ def main():
 
         if exit_Button.draw(BACKGROUND):
            pygame.quit()
+        
+        # if reset_Button.draw(BACKGROUND):
+        #     main()
         
         space_trash_movement(space_trash1)
         space_trash_movement(space_trash2)
