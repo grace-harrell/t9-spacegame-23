@@ -1,7 +1,7 @@
 import pygame
 from random import randrange
 import os
-import button
+# import button
 pygame.init()
 
 FPS = 100
